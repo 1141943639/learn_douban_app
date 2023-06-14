@@ -14,14 +14,14 @@ class UserModel {
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
-    phone = json['phone'];
-    password = json['password'];
+    phone = json['phone'] as String?;
+    password = json['password'] as String?;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['phone'] = this.phone;
-    data['password'] = this.password;
+    final data = <String, dynamic>{};
+    data['phone'] = phone;
+    data['password'] = password;
     return data;
   }
 
@@ -67,10 +67,10 @@ class UserDBProvider extends BaseDBProvider {
   UserDBProvider();
 
   @override
-  get tableName => 'UserInfo';
+  String get tableName => 'UserInfo';
 
   @override
-  get createSql {
+  String get createSql {
     final json = UserModel().toJson();
 
     json['phone'] = 'text';
@@ -81,10 +81,10 @@ class UserDBProvider extends BaseDBProvider {
 
   Future<UserModel?> getUserByPhone(String phone) async {
     try {
-      final User = await SqlManager.database
+      final user = await SqlManager.database
           ?.query(tableName, where: 'phone = ?', whereArgs: [phone]);
 
-      return UserModel.fromMap(User!.first);
+      return UserModel.fromMap(user!.first);
     } catch (error, stackTrace) {
       LogHelper.error(error, stackTrace);
     }

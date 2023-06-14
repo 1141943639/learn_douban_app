@@ -14,15 +14,18 @@ import 'package:copy_to_app/pages/login/widgets/verify_code_input.dart';
 import 'package:copy_to_app/utils/app_dialog.dart';
 import 'package:copy_to_app/utils/enum_helper.dart';
 
-import '../../common/sqlite/user_db_provider.dart';
+import 'package:copy_to_app/common/sqlite/user_db_provider.dart';
 
-final CommonInputDecoration = InputDecoration(
-    hintStyle: TextStyle(fontSize: 12),
-    contentPadding: EdgeInsets.symmetric(vertical: 20),
-    focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: HexColor('#f5f5f5'))),
-    enabledBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: HexColor('#f5f5f5'))));
+final commonInputDecoration = InputDecoration(
+  hintStyle: const TextStyle(fontSize: 12),
+  contentPadding: const EdgeInsets.symmetric(vertical: 20),
+  focusedBorder: UnderlineInputBorder(
+    borderSide: BorderSide(color: HexColor('#f5f5f5')),
+  ),
+  enabledBorder: UnderlineInputBorder(
+    borderSide: BorderSide(color: HexColor('#f5f5f5')),
+  ),
+);
 
 enum LoginType { verifyCode, password }
 
@@ -119,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
 
   LoginType loginType = LoginType.password;
 
-  useLoginType(Map<LoginType, dynamic> value) {
+  dynamic useLoginType(Map<LoginType, dynamic> value) {
     return value[loginType];
   }
 
@@ -136,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void handleSave() async {
+  Future<void> handleSave() async {
     if (form.valid == false) return;
 
     final formValue = UserModel.fromMap(form.value);
@@ -204,6 +207,7 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         CommonHeaderWrap(
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
                 onTap: () {
@@ -227,186 +231,195 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               )
             ],
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30),
-          child: Column(children: [
-            Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Gap(30),
+                      Text(
+                        EnumHelper.useEnum(loginType, {
+                          LoginType.password: '密码登录',
+                          LoginType.verifyCode: '验证码登录'
+                        }),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 26),
+                      ),
+                      const Gap(10),
+                      Text(
+                        'Hi, 欢迎来到豆果美食会做饭很酷~',
+                        style: TextStyle(color: HexColor('#c7c7c7')),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const Gap(60),
+              ReactiveForm(
+                key: Key(loginType.toString()),
+                formGroup: form,
+                child: Column(
                   children: [
-                    Gap(30),
-                    Text(
-                      EnumHelper.useEnum(loginType, {
-                        LoginType.password: '密码登录',
-                        LoginType.verifyCode: '验证码登录'
-                      }),
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+                    ReactiveTextField(
+                      formControlName: 'phone',
+                      style: const TextStyle(
+                        fontSize: 12,
+                      ),
+                      textAlignVertical: TextAlignVertical.center,
+                      autofocus: true,
+                      showErrors: (_) => false,
+                      onChanged: (value) {
+                        print(formGroups[LoginType.password]?.value);
+                        print(form.value);
+                        print(value.value);
+                      },
+                      keyboardType: TextInputType.phone,
+                      decoration: commonInputDecoration.copyWith(
+                        prefixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '+86',
+                              style: TextStyle(color: HexColor('#000000')),
+                            ),
+                            const Gap(10),
+                            Image.asset(
+                              'assets/images/common/icon_topic_down@2x.png',
+                              width: 15,
+                              height: 15,
+                            ),
+                            const Gap(10)
+                          ],
+                        ),
+                        hintText: '请输入手机号',
+                      ),
                     ),
-                    Gap(10),
-                    Text(
-                      'Hi, 欢迎来到豆果美食会做饭很酷~',
-                      style: TextStyle(color: HexColor('#c7c7c7')),
-                    ),
+                    EnumHelper.useEnum(loginType, {
+                      LoginType.password: ReactiveTextField(
+                        formControlName: 'password',
+                        obscureText: true,
+                        showErrors: (_) => false,
+                        decoration: commonInputDecoration.copyWith(
+                          hintText: '请输入密码',
+                        ),
+                      ),
+                      LoginType.verifyCode: VerifyCodeInput(
+                        form: form,
+                      )
+                    })
                   ],
                 ),
-              ],
-            ),
-            Gap(60),
-            ReactiveForm(
-              key: Key(loginType.toString()),
-              formGroup: form,
-              child: Column(children: [
-                ReactiveTextField(
-                  formControlName: 'phone',
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                  textAlignVertical: TextAlignVertical.center,
-                  autofocus: true,
-                  showErrors: (_) => false,
-                  onChanged: (value) {
-                    print(formGroups[LoginType.password]?.value);
-                    print(form.value);
-                    print(value.value);
-                  },
-                  keyboardType: TextInputType.phone,
-                  decoration: CommonInputDecoration.copyWith(
-                    prefixIcon: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          '+86',
-                          style: TextStyle(color: HexColor('#000000')),
-                        ),
-                        Gap(10),
-                        Image.asset(
-                          'assets/images/common/icon_topic_down@2x.png',
-                          width: 15,
-                          height: 15,
-                        ),
-                        Gap(10)
-                      ],
-                    ),
-                    hintText: '请输入手机号',
-                  ),
-                ),
-                EnumHelper.useEnum(loginType, {
-                  LoginType.password: ReactiveTextField(
-                    formControlName: 'password',
-                    obscureText: true,
-                    showErrors: (_) => false,
-                    decoration: CommonInputDecoration.copyWith(
-                      hintText: '请输入密码',
-                    ),
-                  ),
-                  LoginType.verifyCode: VerifyCodeInput(
-                    form: form,
-                  )
-                })
-              ]),
-            ),
-            Gap(20),
-            /**
+              ),
+              const Gap(20),
+              /**
                  * 提交按钮
                  */
-            ValueListenableBuilder(
-              builder: (context, formValid, child) => GestureDetector(
-                onTap: handleSave,
-                child: Container(
-                  decoration: BoxDecoration(
+              ValueListenableBuilder(
+                builder: (context, formValid, child) => GestureDetector(
+                  onTap: handleSave,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: formValid
                           ? ThemeColor.primaryYellow
-                          : HexColor('#f0f0f0')),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Text(
-                          '登录',
-                          style: TextStyle(
+                          : HexColor('#f0f0f0'),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Text(
+                            '登录',
+                            style: TextStyle(
                               color: formValid
                                   ? Colors.black
                                   : HexColor('#b5b5b5'),
                               fontWeight: FontWeight.bold,
-                              fontSize: 18),
+                              fontSize: 18,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
+                valueListenable: formValid,
               ),
-              valueListenable: formValid,
-            ),
-            Gap(20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
+              const Gap(20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
                     onTap: handleChangeLoginType,
-                    child: Text(EnumHelper.useEnum(loginType, {
-                      LoginType.password: '验证码登录',
-                      LoginType.verifyCode: '密码登录'
-                    }))),
-                Text('注册')
-              ],
-            ),
-            Gap(30),
-            Row(
-              children: [
-                Text('其他登录方式'),
-              ],
-            ),
-            Gap(20),
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: otherLoginMethodImgUrl
-                        .map((e) => Image.asset(
+                    child: Text(
+                      EnumHelper.useEnum(loginType, {
+                        LoginType.password: '验证码登录',
+                        LoginType.verifyCode: '密码登录'
+                      }),
+                    ),
+                  ),
+                  const Text('注册')
+                ],
+              ),
+              const Gap(30),
+              const Row(
+                children: [
+                  Text('其他登录方式'),
+                ],
+              ),
+              const Gap(20),
+              Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: otherLoginMethodImgUrl
+                          .map(
+                            (e) => Image.asset(
                               e,
                               width: 30,
                               height: 30,
-                            ))
-                        .toList(),
+                            ),
+                          )
+                          .toList(),
+                    ),
                   ),
+                  const Spacer()
+                ],
+              ),
+              const Gap(20),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Wrap(
+                  children: [
+                    Text(
+                      '登录即同意',
+                      style: TextStyle(color: HexColor('#a0a09f')),
+                    ),
+                    const Text(
+                      '《联通/移动同意认证服务条款》',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const Text(
+                      '《用户协议》',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const Text(
+                      '《用户协议》',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-                Spacer(
-                  flex: 1,
-                )
-              ],
-            ),
-            Gap(20),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Wrap(children: [
-                Text(
-                  '登录即同意',
-                  style: TextStyle(color: HexColor('#a0a09f')),
-                ),
-                Text(
-                  '《联通/移动同意认证服务条款》',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '《用户协议》',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '《用户协议》',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ]),
-            )
-          ]),
+              )
+            ],
+          ),
         )
       ],
     );

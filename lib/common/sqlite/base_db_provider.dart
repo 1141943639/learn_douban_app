@@ -1,23 +1,23 @@
 import 'package:copy_to_app/common/sqlite/sql_manager.dart';
 
 abstract class BaseDBProvider {
-  get createSql => '';
-  get tableName => '';
+  String get createSql => '';
+  String get tableName => '';
 
   Future<void> open() async {
-    bool isTableExist = await SqlManager.isTableExist(tableName);
+    var isTableExist = await SqlManager.isTableExist(tableName);
 
     if (!isTableExist) {
-      SqlManager.database?.rawQuery(createSql);
+      await SqlManager.database?.rawQuery(createSql);
     }
   }
 
   String jsonToCreateSql(Map<String, dynamic> json) {
-    List<String> sql = [];
+    var sql = <String>[];
 
-    json.entries.forEach((element) {
+    for (var element in json.entries) {
       sql.add('${element.key} ${element.value}');
-    });
+    }
 
     return 'create table $tableName (${sql.join(', ')})';
   }

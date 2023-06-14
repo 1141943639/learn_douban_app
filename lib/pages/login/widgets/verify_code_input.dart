@@ -46,7 +46,7 @@ class _VerifyCodeInputState extends State<VerifyCodeInput> {
             showErrors: (_) => false,
             style: TextStyle(fontSize: 12),
             textAlignVertical: TextAlignVertical.center,
-            decoration: CommonInputDecoration.copyWith(
+            decoration: commonInputDecoration.copyWith(
               hintText: '请输入验证码',
             ),
           ),

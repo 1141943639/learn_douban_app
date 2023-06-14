@@ -1,10 +1,10 @@
 import 'package:sqflite/sqflite.dart';
 
 class SqlManager {
-  static String _NAME = 'data.db';
+  static const String _NAME = 'data.db';
   static Database? database;
 
-  static init() async {
+  static Future<void> init() async {
     // 判断是否初始化
     if (database != null) return;
 
@@ -14,11 +14,9 @@ class SqlManager {
   static Future<bool> isTableExist(String tableName) async {
     await init();
 
-    final res = (await database?.rawQuery(
-        "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = '${tableName}'"));
-
     return (await database?.rawQuery(
-                "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = '${tableName}'"))
+          "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = '$tableName'",
+        ))
             ?.isNotEmpty ??
         false;
   }
