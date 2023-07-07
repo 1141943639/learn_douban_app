@@ -14,6 +14,9 @@ on:
 jobs:
   verygoodbuild:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
+    with: 
+     test_optimization: false
+     flutter_version: 3.10.5
 
   build:
     runs-on: ubuntu-latest
