@@ -32,5 +32,4 @@ jobs:
           flutter-version: '3.10.5'
       - run: flutter pub get
       - run: flutter build apk --flavor development --target lib/main_development.dart --debug
-      - run: flutter build appbundle
 
