@@ -12,6 +12,9 @@ on:
     branches: [ "main" ]
 
 jobs:
+  verygoodbuild:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
+
   build:
     runs-on: ubuntu-latest
 
