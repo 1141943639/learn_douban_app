@@ -28,6 +28,6 @@ jobs:
       - run: flutter build apk --flavor development --target lib/main_development.dart --debug
       - uses: actions/upload-artifact@v1
         with:
-          name: release-apk
-          path: /home/runner/work/learn_douban_app/build/app/outputs/flutter-apk/app-devlopment-debug.apk
+          name: app-development-debug
+          path: build/app/outputs/flutter-apk/app-development-debug.apk
 
