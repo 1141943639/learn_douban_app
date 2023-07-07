@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 class LogHelper {
   static void error(error, stackTrace) {
@@ -6,3 +7,5 @@ class LogHelper {
         FlutterErrorDetails(exception: error, stack: stackTrace));
   }
 }
+
+Logger logger = Logger();

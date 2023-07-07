@@ -1,11 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:copy_to_app/pages/learn_aem/learn_aem.dart';
+import 'package:copy_to_app/pages/learn_airship/learn_airship.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:copy_to_app/pages/login/login_page.dart';
-import 'package:copy_to_app/pages/me/me_page.dart';
 
 // const NEXT_PAGE_DURATION = Duration(milliseconds: 150);
 // const CURRENT_PAGE_DURATION = Duration(milliseconds: 200);
@@ -68,12 +67,14 @@ import 'package:copy_to_app/pages/me/me_page.dart';
 //   }
 // }
 
-final router = GoRouter(initialLocation: '/me', routes: [
-  AppRoute(
-    path: '/me',
-    builder: (state) => const MePage(),
-  ),
-  AppRoute(path: '/login', builder: (state) => LoginPage()),
+final router = GoRouter(initialLocation: '/learn_aem', routes: [
+  // AppRoute(
+  //   path: '/me',
+  //   builder: (state) => const MePage(),
+  // ),
+  // AppRoute(path: '/login', builder: (state) => LoginPage()),
+  AppRoute(path: '/learn_airship', builder: (state) => LearnAirship()),
+  AppRoute(path: '/learn_aem', builder: (state) => LearnAem()),
 ]);
 
 class AppRoute extends GoRoute {

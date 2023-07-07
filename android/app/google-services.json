@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1604280749",
+    "project_id": "learn-4d6e3",
+    "storage_bucket": "learn-4d6e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1604280749:android:290ba6322a7bba3ed68124",
+        "android_client_info": {
+          "package_name": "com.example.verygoodcore.copy_to_app.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1604280749-8dl23qlr0ee51b3i060jqjsqhfrmk54e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSP4V0Ogp1IB2ULYhCZRAs7nF2jO2DqL0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1604280749-8dl23qlr0ee51b3i060jqjsqhfrmk54e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
